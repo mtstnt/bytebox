@@ -1,0 +1,22 @@
+services:
+  master:
+    build:
+      context: .
+      dockerfile: bytebox_apps/master/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+      
+  worker:
+    build:
+      context: .
+      dockerfile: bytebox_apps/worker/Dockerfile
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - PYTHONPATH=/app
+      - DOCKER_HOST=unix:///var/run/docker.sock
