@@ -8,8 +8,6 @@ from sqlalchemy.orm import Session
 from bytebox.auth.helpers import generate_token
 from bytebox.auth.schemas import LoginRequest
 from bytebox.config.database import get_database
-from bytebox.settings import JWT_SECRET
-from bytebox.settings import ENVIRONMENT
 from bytebox.users.models import UserModel
 
 router = APIRouter(prefix = "/auth")

@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from bytebox.config.database import get_database
 from bytebox.users.models import UserModel
 from bytebox.users.repository import UserRepository
-from bytebox.settings import JWT_SECRET
+from bytebox.config.settings import JWT_SECRET
 
 def get_session_user(db: Annotated[Session, Depends(get_database)], authorization: Annotated[str, Header()] = None) -> Tuple[Dict, str]:
     user_repository = UserRepository.from_session(db)

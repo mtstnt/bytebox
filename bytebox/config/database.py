@@ -4,7 +4,7 @@ from sqlalchemy import BigInteger, Integer
 from sqlalchemy.orm import Mapped, declarative_base, mapped_column, Session
 from sqlalchemy import create_engine
 
-from bytebox.settings import DATABASE_URL
+from bytebox.config.settings import DATABASE_URL
 
 Base = declarative_base()
 engine = create_engine(DATABASE_URL)
