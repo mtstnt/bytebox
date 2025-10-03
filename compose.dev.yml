@@ -1,22 +1,29 @@
 services:
   master:
+    command: ['/bin/bash', '/app/deployments/docker-entrypoint.dev.sh']
     build:
       context: .
-      dockerfile: bytebox_apps/master/Dockerfile
+      dockerfile: deployments/Dockerfile.dev
     ports:
       - "8000:8000"
-    volumes:
-      - .:/app
-    environment:
-      - PYTHONPATH=/app
-      
-  worker:
-    build:
-      context: .
-      dockerfile: bytebox_apps/worker/Dockerfile
     volumes:
       - .:/app
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - PYTHONPATH=/app
+      - ENVIRONMENT=development
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DATABASE_URL=sqlite:///./volumes/bytebox.dev.db
+      
+  worker:
+    command: ['python', 'bytebox/worker.py']
+    build:
+      context: .
+      dockerfile: deployments/Dockerfile.dev
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - PYTHONPATH=/app
+      - ENVIRONMENT=development
       - DOCKER_HOST=unix:///var/run/docker.sock
