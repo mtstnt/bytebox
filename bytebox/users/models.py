@@ -1,9 +1,9 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from bytebox.config.database import BaseORMModel
+from bytebox.config.database import Base, CommonMixin
 
-class UserModel(BaseORMModel):
+class UserModel(CommonMixin, Base):
     __tablename__ = "users"
     
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False)

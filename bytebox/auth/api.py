@@ -1,9 +1,13 @@
+from typing import Annotated
 import jwt
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from bytebox.auth.helpers import generate_token
 from bytebox.auth.schemas import LoginRequest
+from bytebox.config.database import get_database
 from bytebox.settings import JWT_SECRET
 from bytebox.settings import ENVIRONMENT
 from bytebox.users.models import UserModel
@@ -11,9 +15,16 @@ from bytebox.users.models import UserModel
 router = APIRouter(prefix = "/auth")
 
 @router.post("/login")
-async def login(request: LoginRequest):
-    if ENVIRONMENT == "development": 
-        if request.username == "admin" and request.password == "admin":
-            token = generate_token(UserModel(username=request.username, email="admin@admin.com"))
-            return {"token": token}
-    raise HTTPException(status_code=401, detail="Invalid username or password")
+async def login(db: Annotated[Session, Depends(get_database)], request: LoginRequest):
+    stmt = select(UserModel).where(UserModel.username == request.username and UserModel.password == request.password)
+    user = db.execute(stmt).scalar_one_or_none()
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid username or password")
+    token = generate_token(user)
+    return {
+        "token": token,
+        "user": {
+            "username": user.username,
+            "email": user.email
+        },
+    }

@@ -7,8 +7,8 @@ alembic upgrade head
 
 # Seed the database (if you have a seeding script)
 # Uncomment and modify the following line if you have a seeding script
-# echo "Seeding database..."
-# python scripts/seed.py
+echo "Seeding database..."
+python bytebox/config/seeder.py
 
 # Start the application
 echo "Starting uvicorn server..."
