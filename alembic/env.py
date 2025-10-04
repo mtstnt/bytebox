@@ -20,7 +20,12 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 # target_metadata = None
+
 import bytebox.users.models as _
+import bytebox.workers.models as _
+import bytebox.pipelines.models as _
+import bytebox.sandbox.models as _
+
 from bytebox.config.database import Base
 target_metadata = Base.metadata
 
