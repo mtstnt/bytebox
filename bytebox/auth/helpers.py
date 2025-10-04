@@ -30,5 +30,5 @@ def parse_auth_header(authorization: Optional[str]) -> Tuple[Dict, str]:
         raise HTTPException(status_code=401, detail="Invalid token")
     return (claims, token)
     
-def generate_token(user: UserModel) -> str:
-    return jwt.encode({"email": user.email, "username": user.username}, JWT_SECRET, algorithm="HS256")
+def generate_token(user: UserModel, jwt_secret: str) -> str:
+    return jwt.encode({"email": user.email, "username": user.username}, jwt_secret, algorithm="HS256")

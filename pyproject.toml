@@ -14,3 +14,13 @@ dependencies = [
     "sqlalchemy>=2.0.43",
     "uvicorn[standard]>=0.33.0",
 ]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+pythonpath = [
+  "."
+]
+testpaths = [
+    "tests",
+]
